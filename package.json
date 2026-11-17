@@ -1,0 +1,26 @@
+{
+  "name": "le-gambleur-fou",
+  "version": "1.0.0",
+  "description": "Suivi personnel des mises, retours et résultats des jeux d'argent",
+  "main": "src/main.js",
+  "author": "Le Gambleur Fou",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --mac --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "33.4.11",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "fr.legambleurfou.app",
+    "productName": "Le Gambleur Fou",
+    "directories": { "output": "release" },
+    "files": ["src/**/*", "package.json"],
+    "mac": { "category": "public.app-category.finance", "target": ["dmg", "zip"], "icon": "src/icons/icon-512.png" },
+    "win": { "target": ["nsis", "portable"], "icon": "src/icons/icon-512.png" }
+  }
+}

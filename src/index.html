@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101014"><meta name="description" content="Suivi privé des mises, retours et résultats.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png"><link rel="stylesheet" href="styles.css">
+<title>Le Gambleur Fou</title>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="gambleur.gif" alt="Logo animé"><div><strong>LE GAMBLEUR FOU</strong><small>LES COMPTES SANS BLUFF</small></div></div>
+  <div class="top-actions"><span id="cloudState" class="cloud">HORS LIGNE</span><button id="accountBtn" class="ghost">Compte</button></div>
+</header>
+<main>
+<section id="authPanel" class="auth panel">
+ <div class="auth-art"><img src="gambleur.gif" alt=""><h1>Les chiffres, eux,<br><em>ne mentent pas.</em></h1><p>Un tableau de bord personnel pour garder une trace claire de tes mises et de tes retours.</p></div>
+ <div class="auth-form"><div class="eyebrow">ESPACE PERSONNEL</div><h2 id="authTitle">Connexion</h2>
+  <label>Adresse e-mail<input id="email" type="email" autocomplete="email" placeholder="toi@exemple.fr"></label>
+  <label>Mot de passe<input id="password" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+  <button id="authSubmit" class="primary wide">Se connecter</button>
+  <button id="authToggle" class="link wide">Créer un compte</button>
+  <p id="authMessage" class="message"></p>
+  <p class="fine">Les données sont privées et associées à ton compte. Tu peux aussi utiliser l'application sans compte sur cet appareil.</p>
+  <button id="localMode" class="ghost wide">Continuer sans compte (stockage local)</button>
+ </div>
+</section>
+<section id="appPanel" hidden>
+ <div class="hero-row"><div><div class="eyebrow">TON TABLEAU DE BORD</div><h1>Le bilan, <em>sans détour.</em></h1><p class="sub">Saisis les opérations réellement effectuées. Le résultat net est calculé automatiquement.</p></div><button id="logout" class="ghost">Déconnexion</button></div>
+ <section class="stats">
+  <article class="stat"><span>Total misé</span><strong id="totalStaked">0,00 €</strong><small>Somme de toutes les mises</small></article>
+  <article class="stat"><span>Total récupéré</span><strong id="totalReturned">0,00 €</strong><small>Retours réellement encaissés</small></article>
+  <article class="stat featured"><span>Résultat net</span><strong id="netResult">0,00 €</strong><small>Mises déduites des retours</small></article>
+  <article class="stat"><span>Nombre d'opérations</span><strong id="entryCount">0</strong><small>Dans ton historique</small></article>
+ </section>
+ <section class="grid">
+  <div class="panel form-panel">
+   <div class="section-head"><div><div class="eyebrow">NOUVELLE OPÉRATION</div><h2>Ajouter un résultat</h2></div><span class="chip">SAISIE RAPIDE</span></div>
+   <form id="entryForm">
+    <div class="form-grid">
+     <label>Date<input id="date" type="date" required></label>
+     <label>Type de jeu<select id="category"><option>Paris sportifs</option><option>Poker</option><option>Casino</option><option>Machines à sous</option><option>Jeux à gratter</option><option>Loterie</option><option>Autre</option></select></label>
+     <label class="span2">Site / lieu / jeu<input id="platform" maxlength="80" placeholder="Ex. : soirée poker, opérateur…"></label>
+     <label>Mise (€)<input id="stake" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" required></label>
+     <label>Retour encaissé (€)<input id="returned" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" required></label>
+     <label class="span2">Note (facultatif)<input id="note" maxlength="180" placeholder="Détail utile…"></label>
+    </div>
+    <div class="preview"><span>Résultat de cette opération</span><strong id="entryNet">0,00 €</strong></div>
+    <button class="primary wide" type="submit">＋ Enregistrer l'opération</button>
+   </form>
+  </div>
+  <div class="panel chart-panel">
+   <div class="section-head"><div><div class="eyebrow">ÉVOLUTION</div><h2>Résultat cumulé</h2></div></div>
+   <div class="chart-wrap"><canvas id="chart" height="230"></canvas><div id="chartEmpty" class="empty-chart">Ajoute des opérations pour afficher ton évolution.</div></div>
+   <div class="chart-legend"><span><i></i>Résultat net cumulé</span><small id="roi">ROI : 0 %</small></div>
+   <div class="warning">Un résultat passé ne prédit jamais un résultat futur. Ne mise jamais pour tenter de récupérer une perte.</div>
+  </div>
+ </section>
+ <section class="panel history">
+  <div class="section-head history-head"><div><div class="eyebrow">TES DONNÉES</div><h2>Historique</h2></div><div class="history-actions"><input id="search" placeholder="Rechercher…" aria-label="Rechercher"><select id="filter"><option value="all">Toutes les catégories</option><option>Paris sportifs</option><option>Poker</option><option>Casino</option><option>Machines à sous</option><option>Jeux à gratter</option><option>Loterie</option><option>Autre</option></select><button id="csv" class="ghost">Exporter CSV</button><button id="print" class="ghost">PDF / Imprimer</button></div></div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Catégorie</th><th>Site / jeu</th><th>Mise</th><th>Retour</th><th>Net</th><th></th></tr></thead><tbody id="entries"></tbody></table><div id="empty" class="empty">Aucune opération enregistrée pour le moment.</div></div>
+ </section>
+ <footer><span>LE GAMBLEUR FOU · SUIVI PERSONNEL</span><span>Un outil de suivi, pas un service de jeu.</span></footer>
+</section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="config.js"></script><script src="app.js"></script>
+</body></html>
